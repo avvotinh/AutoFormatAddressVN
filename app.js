@@ -1,5 +1,6 @@
 const fs = require("fs");
 const express = require("express");
+const utf8 = require("utf8");
 const app = express();
 const formatVietnameseAddress = require("./util.js").formatVietnameseAddress;
 
@@ -13,7 +14,8 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/address", async function (req, res) {
-  const inputText = req.query.input;
+  const inputText = utf8.decode(req.query.input);
+  console.log(utf8.decode(req.query.input));
   const addressFormatted = await formatVietnameseAddress(inputText, datas);
 
   res.send(addressFormatted);

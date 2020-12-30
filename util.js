@@ -113,14 +113,16 @@ async function fetchPlaceFromGoogleMapsApi(input, addressInputExtracted) {
     .toLowerCase()
     .replace(/^(ấp|hẻm|xóm|xom|ap|hem)/g, "")
     .trim();
-  const placeResponse = await axios(
-    `${GOOGLE_GET_AUTOCOMPLATE_API}?input=${inputQuery}&key=${GOOGLE_API_KEY}=&sessiontoken=1234567890`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+
+  const originURL = `${GOOGLE_GET_AUTOCOMPLATE_API}?input=${inputQuery}&key=${GOOGLE_API_KEY}=&sessiontoken=1234567890`;
+
+  console.log(originURL);
+
+  const placeResponse = await axios(encodeURI(originURL), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (placeResponse.data.predictions.length) {
     const placeResponseMatched = placeResponse.data.predictions.reduce(
@@ -162,14 +164,13 @@ async function fetchPlaceFromGoogleMapsApi(input, addressInputExtracted) {
 
     formatted_address = placeResponseMatched.address.value;
   } else {
-    const otherPlaceResponse = await axios(
-      `${GOOGLE_GET_PLACE_API}?query=${inputQuery}&key=${GOOGLE_API_KEY}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const url = `${GOOGLE_GET_PLACE_API}?query=${inputQuery}&key=${GOOGLE_API_KEY}`;
+
+    const otherPlaceResponse = await axios(encodeURI(url), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!otherPlaceResponse.data.results.length) {
       return null;
