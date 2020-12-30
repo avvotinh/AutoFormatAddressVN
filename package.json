@@ -14,6 +14,7 @@
   "author": "Le Van Hop",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.1",
     "express": "^4.17.1"
   }
 }
