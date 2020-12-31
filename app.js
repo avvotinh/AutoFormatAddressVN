@@ -9,7 +9,9 @@ const app = express();
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.send("Yup! Sếp Hợp gọi em sao...");
+  res.send(
+    "Yup! Em là Đào đây. Sếp Hợp gọi em sao... &#10084;&#10084;&#10084;"
+  );
 });
 
 app.get("/api/address", async function (req, res) {
