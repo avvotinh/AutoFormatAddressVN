@@ -93,7 +93,7 @@ async function fetchPlaceFromGoogleMapsApi(input, addressInputExtracted) {
 
     formatted_address = placeResponseMatched.address.value;
   } else {
-    const otherPlaceResponse = fetchAddressFromGooglePlaceApi(inputQuery);
+    const otherPlaceResponse = await fetchAddressFromGooglePlaceApi(inputQuery);
 
     if (!otherPlaceResponse.length) {
       return null;
@@ -150,7 +150,6 @@ function getStreetFromInputOriginal(input, address) {
   let indexOfStreet = 0;
   const inputConvert = util.xoa_dau(input).toLowerCase();
   const keys = getKeysFromAddressFound(address);
-  console.log(inputConvert);
 
   keys.forEach((key, index) => {
     if (indexOfStreet > 0) {
@@ -158,29 +157,23 @@ function getStreetFromInputOriginal(input, address) {
     }
 
     const indexs = [];
-
     indexs.push(inputConvert.indexOf(key));
 
     switch (index) {
       case 0:
-        indexs.push(inputConvert.indexOf(`xã ${key}`));
         indexs.push(inputConvert.indexOf(`xa ${key}`));
         indexs.push(inputConvert.indexOf(`x ${key}`));
-        indexs.push(inputConvert.indexOf(`x${key}`));
         indexs.push(inputConvert.indexOf(`x. ${key}`));
         indexs.push(inputConvert.indexOf(`x.${key}`));
-        indexs.push(inputConvert.indexOf(`phường ${key}`));
-        indexs.push(inputConvert.indexOf(`phương ${key}`));
         indexs.push(inputConvert.indexOf(`phuong ${key}`));
-        indexs.push(inputConvert.indexOf(`p${key}`));
         indexs.push(inputConvert.indexOf(`p ${key}`));
+        indexs.push(inputConvert.indexOf(`p${key}`));
         indexs.push(inputConvert.indexOf(`p. ${key}`));
         indexs.push(inputConvert.indexOf(`p.${key}`));
         indexs.push(inputConvert.indexOf(`ph ${key}`));
         indexs.push(inputConvert.indexOf(`ph${key}`));
         indexs.push(inputConvert.indexOf(`ph. ${key}`));
         indexs.push(inputConvert.indexOf(`ph.${key}`));
-        indexs.push(inputConvert.indexOf(`thị trấn ${key}`));
         indexs.push(inputConvert.indexOf(`thi tran ${key}`));
         indexs.push(inputConvert.indexOf(`tt ${key}`));
         indexs.push(inputConvert.indexOf(`tt${key}`));
@@ -193,7 +186,6 @@ function getStreetFromInputOriginal(input, address) {
         break;
       case 1:
         indexs.push(inputConvert.indexOf(`thi xa ${key}`));
-        indexs.push(inputConvert.indexOf(`thị xã ${key}`));
         indexs.push(inputConvert.indexOf(`tx ${key}`));
         indexs.push(inputConvert.indexOf(`tx${key}`));
         indexs.push(inputConvert.indexOf(`tx. ${key}`));
@@ -201,13 +193,11 @@ function getStreetFromInputOriginal(input, address) {
         indexs.push(inputConvert.indexOf(`t.x ${key}`));
         indexs.push(inputConvert.indexOf(`t.x.${key}`));
         indexs.push(inputConvert.indexOf(`tx.${key}`));
-        indexs.push(inputConvert.indexOf(`huyện ${key}`));
         indexs.push(inputConvert.indexOf(`huyen ${key}`));
         indexs.push(inputConvert.indexOf(`h ${key}`));
         indexs.push(inputConvert.indexOf(`h${key}`));
         indexs.push(inputConvert.indexOf(`h.${key}`));
         indexs.push(inputConvert.indexOf(`h. ${key}`));
-        indexs.push(inputConvert.indexOf(`quận ${key}`));
         indexs.push(inputConvert.indexOf(`quan ${key}`));
         indexs.push(inputConvert.indexOf(`q ${key}`));
         indexs.push(inputConvert.indexOf(`q${key}`));
@@ -216,30 +206,96 @@ function getStreetFromInputOriginal(input, address) {
         indexs.push(inputConvert.indexOf(`tp.${key}`));
         indexs.push(inputConvert.indexOf(`tp. ${key}`));
         indexs.push(inputConvert.indexOf(`tp ${key}`));
-        indexs.push(inputConvert.indexOf(`tp${key}`));
         indexs.push(inputConvert.indexOf(`t.p.${key}`));
         indexs.push(inputConvert.indexOf(`t.p. ${key}`));
         indexs.push(inputConvert.indexOf(`t.p ${key}`));
-        indexs.push(inputConvert.indexOf(`thành phố ${key}`));
         indexs.push(inputConvert.indexOf(`thanh pho ${key}`));
+
+        if (key === "binh chanh") {
+          indexs.push(inputConvert.indexOf(`binh tranh`));
+        }
 
         break;
       case 2:
         indexs.push(inputConvert.indexOf(`tp.${key}`));
         indexs.push(inputConvert.indexOf(`tp. ${key}`));
         indexs.push(inputConvert.indexOf(`tp ${key}`));
-        indexs.push(inputConvert.indexOf(`tp${key}`));
         indexs.push(inputConvert.indexOf(`t.p.${key}`));
         indexs.push(inputConvert.indexOf(`t.p. ${key}`));
         indexs.push(inputConvert.indexOf(`t.p ${key}`));
-        indexs.push(inputConvert.indexOf(`thành phố ${key}`));
         indexs.push(inputConvert.indexOf(`thanh pho ${key}`));
         indexs.push(inputConvert.indexOf(`tỉnh ${key}`));
         indexs.push(inputConvert.indexOf(`tinh ${key}`));
         indexs.push(inputConvert.indexOf(`t ${key}`));
-        indexs.push(inputConvert.indexOf(`t${key}`));
         indexs.push(inputConvert.indexOf(`t. ${key}`));
         indexs.push(inputConvert.indexOf(`t.${key}`));
+
+        if (key === "ho chi minh") {
+          indexs.push(inputConvert.indexOf(`tp.hcm`));
+          indexs.push(inputConvert.indexOf(`tp. hcm`));
+          indexs.push(inputConvert.indexOf(`tp hcm`));
+          indexs.push(inputConvert.indexOf(`t.p.hcm`));
+          indexs.push(inputConvert.indexOf(`t.p. hcm`));
+          indexs.push(inputConvert.indexOf(`t.p hcm`));
+          indexs.push(inputConvert.indexOf(`thanh pho hcm`));
+          indexs.push(inputConvert.indexOf(`tp.h.c.m`));
+          indexs.push(inputConvert.indexOf(`tp. h.c.m`));
+          indexs.push(inputConvert.indexOf(`tp h.c.m`));
+          indexs.push(inputConvert.indexOf(`t.p.h.c.m`));
+          indexs.push(inputConvert.indexOf(`t.p. h.c.m`));
+          indexs.push(inputConvert.indexOf(`t.p h.c.m`));
+          indexs.push(inputConvert.indexOf(`thanh pho h.c.m`));
+          indexs.push(inputConvert.indexOf(`tp.sg`));
+          indexs.push(inputConvert.indexOf(`tp. sg`));
+          indexs.push(inputConvert.indexOf(`tp sg`));
+          indexs.push(inputConvert.indexOf(`t.p.sg`));
+          indexs.push(inputConvert.indexOf(`t.p. sg`));
+          indexs.push(inputConvert.indexOf(`t.p sg`));
+          indexs.push(inputConvert.indexOf(`thanh pho sg`));
+          indexs.push(inputConvert.indexOf(`tp.s.g`));
+          indexs.push(inputConvert.indexOf(`tp. s.g`));
+          indexs.push(inputConvert.indexOf(`tp s.g`));
+          indexs.push(inputConvert.indexOf(`t.p.s.g`));
+          indexs.push(inputConvert.indexOf(`t.p. s.g`));
+          indexs.push(inputConvert.indexOf(`t.p s.g`));
+          indexs.push(inputConvert.indexOf(`thanh pho s.g`));
+          indexs.push(inputConvert.indexOf(`thanh pho sai gon`));
+          indexs.push(inputConvert.indexOf(`sai gon`));
+        }
+
+        if (key === "ha noi") {
+          indexs.push(inputConvert.indexOf(`tp.hn`));
+          indexs.push(inputConvert.indexOf(`tp. hn`));
+          indexs.push(inputConvert.indexOf(`tp hn`));
+          indexs.push(inputConvert.indexOf(`t.p.hn`));
+          indexs.push(inputConvert.indexOf(`t.p. hn`));
+          indexs.push(inputConvert.indexOf(`t.p hn`));
+          indexs.push(inputConvert.indexOf(`thanh pho hn`));
+          indexs.push(inputConvert.indexOf(`tp.h.n`));
+          indexs.push(inputConvert.indexOf(`tp. h.n`));
+          indexs.push(inputConvert.indexOf(`tp h.n`));
+          indexs.push(inputConvert.indexOf(`t.p.h.n`));
+          indexs.push(inputConvert.indexOf(`t.p. h.n`));
+          indexs.push(inputConvert.indexOf(`t.p h.n`));
+          indexs.push(inputConvert.indexOf(`thanh pho h.n`));
+        }
+
+        if (key === "da nang") {
+          indexs.push(inputConvert.indexOf(`tp.dn`));
+          indexs.push(inputConvert.indexOf(`tp. dn`));
+          indexs.push(inputConvert.indexOf(`tp dn`));
+          indexs.push(inputConvert.indexOf(`t.p.dn`));
+          indexs.push(inputConvert.indexOf(`t.p. dn`));
+          indexs.push(inputConvert.indexOf(`t.p dn`));
+          indexs.push(inputConvert.indexOf(`thanh pho dn`));
+          indexs.push(inputConvert.indexOf(`tp.d.n`));
+          indexs.push(inputConvert.indexOf(`tp. d.n`));
+          indexs.push(inputConvert.indexOf(`tp d.n`));
+          indexs.push(inputConvert.indexOf(`t.p.d.n`));
+          indexs.push(inputConvert.indexOf(`t.p. d.n`));
+          indexs.push(inputConvert.indexOf(`t.p d.n`));
+          indexs.push(inputConvert.indexOf(`thanh pho d.n`));
+        }
 
         break;
     }
