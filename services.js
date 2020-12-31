@@ -381,7 +381,7 @@ function extractAddressInputData(input) {
 function getKeysFromAddressFound(address) {
   return address.split(", ").map((e) => {
     e = e
-      .replace(/^(P|TT|TX|TP)/, "")
+      .replace(/^(P|TT|TX|TP|Q)/, "")
       .trim()
       .toLowerCase();
 
