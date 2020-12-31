@@ -231,6 +231,10 @@ function getStreetFromInputOriginal(input, address) {
         indexs.push(inputConvert.indexOf(`t.${key}`));
 
         if (key === "ho chi minh") {
+          indexs.push(inputConvert.indexOf(`hcm`));
+          indexs.push(inputConvert.indexOf(`h.c.m`));
+          indexs.push(inputConvert.indexOf(`sg`));
+          indexs.push(inputConvert.indexOf(`s.g`));
           indexs.push(inputConvert.indexOf(`tp.hcm`));
           indexs.push(inputConvert.indexOf(`tp. hcm`));
           indexs.push(inputConvert.indexOf(`tp hcm`));
@@ -264,6 +268,8 @@ function getStreetFromInputOriginal(input, address) {
         }
 
         if (key === "ha noi") {
+          indexs.push(inputConvert.indexOf(`hn`));
+          indexs.push(inputConvert.indexOf(`h.n`));
           indexs.push(inputConvert.indexOf(`tp.hn`));
           indexs.push(inputConvert.indexOf(`tp. hn`));
           indexs.push(inputConvert.indexOf(`tp hn`));
@@ -281,6 +287,8 @@ function getStreetFromInputOriginal(input, address) {
         }
 
         if (key === "da nang") {
+          indexs.push(inputConvert.indexOf(`dn`));
+          indexs.push(inputConvert.indexOf(`d.n`));
           indexs.push(inputConvert.indexOf(`tp.dn`));
           indexs.push(inputConvert.indexOf(`tp. dn`));
           indexs.push(inputConvert.indexOf(`tp dn`));
